@@ -13,8 +13,8 @@ namespace NoFlapBird
         SpriteBatch spriteBatch;
 
         Texture2D playerSprite;
-        Vector2 position, velocity;//, gravity;
-        public static Vector2 gravity;
+        Vector2 position, velocity, gravity;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
