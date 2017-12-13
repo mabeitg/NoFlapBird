@@ -9,11 +9,13 @@ namespace NoFlapBird
     /// </summary>
     public class Game1 : Game
     {
+        public static Vector2 gravity;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         Texture2D playerSprite;
-        Vector2 position, velocity, gravity;
+        Vector2 position, velocity;
 
         public Game1()
         {
@@ -70,16 +72,7 @@ namespace NoFlapBird
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //Gravitation
-            velocity += gravity;
-
-            //Fågeln rör sig
-            position += velocity;
-
-            if(Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                velocity.Y = -3;
-            }
+            
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -95,7 +88,7 @@ namespace NoFlapBird
 
             //Rita ut spelaren!
             spriteBatch.Begin();
-            spriteBatch.Draw(playerSprite, position, Color.White);
+
             spriteBatch.End();
             // TODO: Add your drawing code here
 

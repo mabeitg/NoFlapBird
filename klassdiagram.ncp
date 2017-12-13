@@ -1,0 +1,39 @@
+<Project>
+  <Name>NoFlapBird</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Untitled</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>Player</Name>
+        <Access>Public</Access>
+        <Location left="323" top="313" />
+        <Size width="296" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">Vector2 velocity</Member>
+        <Member type="Field">int points</Member>
+        <Member type="Constructor">public Player(Texture2D texture)</Member>
+        <Member type="Property">public int Points { get; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>GameObject</Name>
+        <Access>Public</Access>
+        <Location left="64" top="72" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Texture2D texture</Member>
+        <Member type="Field">protected Vector2 position</Member>
+        <Member type="Method">public void Draw(SpriteBatch spriteBatch)</Member>
+        <Member type="Method">public void Update()</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Generalization" first="0" second="1">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
