@@ -9,13 +9,16 @@ namespace NoFlapBird
     /// </summary>
     public class Game1 : Game
     {
-        public static Vector2 gravity;
+        Player player;
 
+        public static Vector2 gravity;
+        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D playerSprite;
-        Vector2 position, velocity;
+        //Ta bort de här!
+        //Texture2D playerSprite;
+        //Vector2 position, velocity;
 
         public Game1()
         {
@@ -32,8 +35,11 @@ namespace NoFlapBird
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            position = new Vector2(100, 50);
-            velocity = new Vector2(2, 1);
+
+            //Ta bort de här!
+            //position = new Vector2(100, 50);
+            //velocity = new Vector2(2, 1);
+
             gravity = new Vector2(0, 0.4f);
 
             base.Initialize();
@@ -48,8 +54,9 @@ namespace NoFlapBird
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            playerSprite = Content.Load<Texture2D>("flappybird");
+            Texture2D playerSprite = Content.Load<Texture2D>("flappybird");
 
+            player = new Player(playerSprite);
             // TODO: use this.Content to load your game content here
         }
 
@@ -72,7 +79,7 @@ namespace NoFlapBird
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            
+            player.Update();
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -88,7 +95,7 @@ namespace NoFlapBird
 
             //Rita ut spelaren!
             spriteBatch.Begin();
-
+            player.Draw(spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 
