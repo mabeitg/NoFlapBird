@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using System;
+using System.Collections.Generic;
 
 namespace NoFlapBird
 {
@@ -11,19 +14,27 @@ namespace NoFlapBird
     {
         Player player;
 
-        public static Vector2 gravity;
+        //FRÅGA 9: Hur ska vi göra om listan ska kunna innehålla objekt av både NormalPipe och UpsideDownPipe?
+        List<NormalPipe> pipes = new List<NormalPipe>();
+
+        Texture2D pipeTexture;
         
+        public static Vector2 gravity;
+//        Song christmasMusic;
+
+        Random rng = new Random();
+
+        double countdown = 1000;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        //Ta bort de här!
-        //Texture2D playerSprite;
-        //Vector2 position, velocity;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            
         }
 
         /// <summary>
@@ -34,11 +45,9 @@ namespace NoFlapBird
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
-            //Ta bort de här!
-            //position = new Vector2(100, 50);
-            //velocity = new Vector2(2, 1);
+            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = 1200;
+            graphics.ApplyChanges();
 
             gravity = new Vector2(0, 0.4f);
 
@@ -55,9 +64,13 @@ namespace NoFlapBird
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D playerSprite = Content.Load<Texture2D>("flappybird");
+            pipeTexture = Content.Load<Texture2D>("flappypipe");
+
+//            christmasMusic = Content.Load<Song>("LetItSnow");
 
             player = new Player(playerSprite);
-            // TODO: use this.Content to load your game content here
+
+//            MediaPlayer.Play(christmasMusic);
         }
 
         /// <summary>
@@ -69,6 +82,8 @@ namespace NoFlapBird
             // TODO: Unload any non ContentManager content here
         }
 
+
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -79,8 +94,30 @@ namespace NoFlapBird
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            //FRÅGA 1: Hur fungerar den här uträkningen?
+            countdown -= gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if(countdown<=0)
+            {
+                Vector2 newVelocity = new Vector2();
+
+                //FRÅGA 3: Varför används NextDouble() i stället för Next()?
+                newVelocity.X =(float) (-10*rng.NextDouble());
+                newVelocity.Y=  - (float)rng.NextDouble();
+
+                pipes.Add(new NormalPipe(pipeTexture, newVelocity));
+            //FRÅGA 2: Vad kan vi göra här med countdown för att inte få så många pipes?
+
+            }
+
             player.Update();
-            // TODO: Add your update logic here
+
+            //FRÅGA 8: Hur fungerar en foreach-sats?
+            foreach (NormalPipe pipe in pipes)
+            {
+                pipe.Update();
+                //FRÅGA 10: Hur skulle vi kunna ta bort alla pipes som har passerat vänsterkanten av skärmen?
+            }
 
             base.Update(gameTime);
         }
@@ -91,11 +128,16 @@ namespace NoFlapBird
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Red);
 
             //Rita ut spelaren!
             spriteBatch.Begin();
             player.Draw(spriteBatch);
+            foreach (NormalPipe pipe in pipes)
+            {
+                pipe.Draw(spriteBatch);
+
+            }
             spriteBatch.End();
             // TODO: Add your drawing code here
 
