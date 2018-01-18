@@ -20,6 +20,22 @@ namespace NoFlapBird
             this.velocity = velocity;
         }
 
+
+        public Rectangle Hitbox
+        {
+            get
+            {
+                Rectangle hitbox = new Rectangle();
+                hitbox.Location = position.ToPoint();
+
+                hitbox.Width = texture.Width;
+                hitbox.Height = texture.Height;
+
+                return hitbox;
+            }
+        }
+
+
         public void Update()
         {
             position += velocity;

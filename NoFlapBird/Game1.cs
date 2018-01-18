@@ -116,6 +116,11 @@ namespace NoFlapBird
             foreach (NormalPipe pipe in pipes)
             {
                 pipe.Update();
+                if(pipe.Hitbox.Intersects(player.Hitbox))
+                {
+                    Exit();
+                }
+
                 //FRÅGA 10: Hur skulle vi kunna ta bort alla pipes som har passerat vänsterkanten av skärmen?
             }
 

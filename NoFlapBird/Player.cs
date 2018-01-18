@@ -23,6 +23,20 @@ namespace NoFlapBird
             velocity = new Vector2(1, -5);
         }
 
+        public Rectangle Hitbox
+        {
+            get
+            {
+                Rectangle hitbox = new Rectangle();
+                hitbox.Location = position.ToPoint();
+
+                hitbox.Width = texture.Width;
+                hitbox.Height = texture.Height;
+
+                return hitbox;
+            }
+        }
+
         public void Update()
         {
             //Gravitation
@@ -34,6 +48,7 @@ namespace NoFlapBird
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 velocity.Y = -3;
+
             }
         }
 
