@@ -12,6 +12,7 @@ namespace NoFlapBird
     {
 
         //FRÅGA 5: Vad betyder det där med base(...)?
+        //Anropar basklassens konstruktor
         public NormalPipe(Texture2D texture, Vector2 velocity):base(texture, velocity)
         {
             float x = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width + 100;

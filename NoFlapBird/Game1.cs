@@ -15,6 +15,7 @@ namespace NoFlapBird
         Player player;
 
         //FRÅGA 9: Hur ska vi göra om listan ska kunna innehålla objekt av både NormalPipe och UpsideDownPipe?
+        //Ändra typ till List<Pipe>, alltså basklassens typ
         List<NormalPipe> pipes = new List<NormalPipe>();
 
         Texture2D pipeTexture;
@@ -95,6 +96,7 @@ namespace NoFlapBird
                 Exit();
 
             //FRÅGA 1: Hur fungerar den här uträkningen?
+            //countdown minskas med tiden det gått sedan förra uppdateringen
             countdown -= gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if(countdown<=0)
@@ -102,17 +104,20 @@ namespace NoFlapBird
                 Vector2 newVelocity = new Vector2();
 
                 //FRÅGA 3: Varför används NextDouble() i stället för Next()?
+                //För att kunna få "alla" tal, inte bara heltal
                 newVelocity.X =(float) (-10*rng.NextDouble());
                 newVelocity.Y=  - (float)rng.NextDouble();
 
                 pipes.Add(new NormalPipe(pipeTexture, newVelocity));
-            //FRÅGA 2: Vad kan vi göra här med countdown för att inte få så många pipes?
-
+                //FRÅGA 2: Vad kan vi göra här med countdown för att inte få så många pipes?
+                //Återställ countdown, t ex 
+                //countdown = 1000;
             }
 
             player.Update();
 
             //FRÅGA 8: Hur fungerar en foreach-sats?
+            //Den loopar igenom varje objekt i en lista eller array
             foreach (NormalPipe pipe in pipes)
             {
                 pipe.Update();
@@ -122,6 +127,8 @@ namespace NoFlapBird
                 }
 
                 //FRÅGA 10: Hur skulle vi kunna ta bort alla pipes som har passerat vänsterkanten av skärmen?
+                //Undersöka positionens x-komposant. Om den är "tillräckligt negativ", ta bort den
+                //ur listan.
             }
 
             base.Update(gameTime);

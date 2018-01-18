@@ -14,6 +14,7 @@ namespace NoFlapBird
         protected Vector2 position, velocity;
 
         //FRÅGA 4: Vad kallas en sån här?
+        //Konstruktor. (Metod som anropas när objekt skapas)
         public Pipe(Texture2D texture, Vector2 velocity)
         {
             this.texture = texture;
@@ -42,6 +43,8 @@ namespace NoFlapBird
         }
 
         //FRÅGA 5: Vadå virtual?
+        //Metoden kan komma att skrivas över (överskuggas) 
+        //av en annan version i en subklass
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position, Color.White);
