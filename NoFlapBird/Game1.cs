@@ -7,18 +7,23 @@ using System.Collections.Generic;
 
 namespace NoFlapBird
 {
+    //Våra Gamestates
+    enum GamesStates { StartScreen, InGame}
+
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
     public class Game1 : Game
     {
+        GamesStates currentGameState;
         Player player;
 
         //FRÅGA 9: Hur ska vi göra om listan ska kunna innehålla objekt av både NormalPipe och UpsideDownPipe?
         //Ändra typ till List<Pipe>, alltså basklassens typ
         List<NormalPipe> pipes = new List<NormalPipe>();
 
-        Texture2D pipeTexture;
+        Texture2D pipeTexture, startScreenTexture;
         
         public static Vector2 gravity;
 //        Song christmasMusic;
@@ -52,6 +57,8 @@ namespace NoFlapBird
 
             gravity = new Vector2(0, 0.4f);
 
+            currentGameState = GamesStates.StartScreen;
+
             base.Initialize();
         }
 
@@ -66,6 +73,7 @@ namespace NoFlapBird
 
             Texture2D playerSprite = Content.Load<Texture2D>("flappybird");
             pipeTexture = Content.Load<Texture2D>("flappypipe");
+            startScreenTexture = Content.Load<Texture2D>("noflapbird_logo");
 
 //            christmasMusic = Content.Load<Song>("LetItSnow");
 
@@ -95,40 +103,54 @@ namespace NoFlapBird
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //FRÅGA 1: Hur fungerar den här uträkningen?
-            //countdown minskas med tiden det gått sedan förra uppdateringen
-            countdown -= gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            if(countdown<=0)
+            //Om spelet är i gång
+            if (currentGameState == GamesStates.InGame)
             {
-                Vector2 newVelocity = new Vector2();
+                //FRÅGA 1: Hur fungerar den här uträkningen?
+                //countdown minskas med tiden det gått sedan förra uppdateringen
+                countdown -= gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                //FRÅGA 3: Varför används NextDouble() i stället för Next()?
-                //För att kunna få "alla" tal, inte bara heltal
-                newVelocity.X =(float) (-10*rng.NextDouble());
-                newVelocity.Y=  - (float)rng.NextDouble();
-
-                pipes.Add(new NormalPipe(pipeTexture, newVelocity));
-                //FRÅGA 2: Vad kan vi göra här med countdown för att inte få så många pipes?
-                //Återställ countdown, t ex 
-                //countdown = 1000;
-            }
-
-            player.Update();
-
-            //FRÅGA 8: Hur fungerar en foreach-sats?
-            //Den loopar igenom varje objekt i en lista eller array
-            foreach (NormalPipe pipe in pipes)
-            {
-                pipe.Update();
-                if(pipe.Hitbox.Intersects(player.Hitbox))
+                if (countdown <= 0)
                 {
-                    Exit();
+                    Vector2 newVelocity = new Vector2();
+
+                    //FRÅGA 3: Varför används NextDouble() i stället för Next()?
+                    //För att kunna få "alla" tal, inte bara heltal
+                    newVelocity.X = (float)(-10 * rng.NextDouble());
+                    newVelocity.Y = -(float)rng.NextDouble();
+
+                    pipes.Add(new NormalPipe(pipeTexture, newVelocity));
+                    //FRÅGA 2: Vad kan vi göra här med countdown för att inte få så många pipes?
+                    //Återställ countdown, t ex 
+                    //countdown = 1000;
                 }
 
-                //FRÅGA 10: Hur skulle vi kunna ta bort alla pipes som har passerat vänsterkanten av skärmen?
-                //Undersöka positionens x-komposant. Om den är "tillräckligt negativ", ta bort den
-                //ur listan.
+                player.Update();
+
+                //FRÅGA 8: Hur fungerar en foreach-sats?
+                //Den loopar igenom varje objekt i en lista eller array
+                foreach (NormalPipe pipe in pipes)
+                {
+                    pipe.Update();
+                    if (pipe.Hitbox.Intersects(player.Hitbox))
+                    {
+                        Exit();
+                    }
+
+                    //FRÅGA 10: Hur skulle vi kunna ta bort alla pipes som har passerat vänsterkanten av skärmen?
+                    //Undersöka positionens x-komposant. Om den är "tillräckligt negativ", ta bort den
+                    //ur listan.
+                }
+            }
+
+            //Om titelskärmen visas
+            else
+            {
+                if(Keyboard.GetState().IsKeyDown(Keys.Space))
+                {
+                    //STARTA SPELET!!1
+                    currentGameState = GamesStates.InGame;
+                }
             }
 
             base.Update(gameTime);
@@ -142,15 +164,27 @@ namespace NoFlapBird
         {
             GraphicsDevice.Clear(Color.Red);
 
-            //Rita ut spelaren!
-            spriteBatch.Begin();
-            player.Draw(spriteBatch);
-            foreach (NormalPipe pipe in pipes)
+            //Om spelet är i gång
+            if (currentGameState == GamesStates.InGame)
             {
-                pipe.Draw(spriteBatch);
+                //Rita ut spelaren!
+                spriteBatch.Begin();
+                player.Draw(spriteBatch);
+                foreach (NormalPipe pipe in pipes)
+                {
+                    pipe.Draw(spriteBatch);
 
+                }
+                spriteBatch.End();
             }
-            spriteBatch.End();
+
+            //Om spelet inte är i gång, visa titelskärmen
+            else
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(startScreenTexture, Vector2.Zero, Color.White);
+                spriteBatch.End();
+            }
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
