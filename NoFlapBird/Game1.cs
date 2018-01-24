@@ -129,12 +129,13 @@ namespace NoFlapBird
 
                 //FRÅGA 8: Hur fungerar en foreach-sats?
                 //Den loopar igenom varje objekt i en lista eller array
-                foreach (NormalPipe pipe in pipes)
+                foreach (NormalPipe pipe in pipes.ToArray())
                 {
                     pipe.Update();
                     if (pipe.Hitbox.Intersects(player.Hitbox))
                     {
-                        Exit();
+                        pipes.Remove(pipe);
+                        //Exit();
                     }
 
                     //FRÅGA 10: Hur skulle vi kunna ta bort alla pipes som har passerat vänsterkanten av skärmen?
