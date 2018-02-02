@@ -50,15 +50,21 @@ namespace NoFlapBird
             //Rotation i färdriktning
             //rotation = (float)Math.Atan2(velocity.Y, velocity.X);
 
+            //Rotation mot musen
+            MouseState mouseState = Mouse.GetState();
+            float deltax = mouseState.X - position.X;
+            float deltay = mouseState.Y - position.Y;
+            rotation = (float)Math.Atan2(deltay, deltax);
+
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 velocity.Y = -3;
 
                 //Rotation vid knapptryck
-                rotation -= MathHelper.TwoPi / 50f;
+//                rotation -= MathHelper.TwoPi / 50f;
             }
-            else
-                rotation += MathHelper.TwoPi / 100f;
+//            else
+//                rotation += MathHelper.TwoPi / 100f;
         }
 
         public void Draw(SpriteBatch spriteBatch)
