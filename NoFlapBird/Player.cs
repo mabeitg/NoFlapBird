@@ -12,7 +12,7 @@ namespace NoFlapBird
     class Player
     {
         Texture2D texture;
-        Vector2 position, velocity;
+        Vector2 position, velocity, center;
         int points;
         float rotation;
 
@@ -22,6 +22,7 @@ namespace NoFlapBird
             this.texture = texture;
             position = new Vector2(50, 100);
             velocity = new Vector2(1, -5);
+            center = new Vector2(texture.Width / 2, texture.Height / 2);
         }
 
         public Rectangle Hitbox
@@ -47,20 +48,24 @@ namespace NoFlapBird
             position += velocity;
 
             //Rotation i färdriktning
-            rotation = (float)Math.Atan2(velocity.Y, velocity.X);
+            //rotation = (float)Math.Atan2(velocity.Y, velocity.X);
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 velocity.Y = -3;
 
+                //Rotation vid knapptryck
+                rotation -= MathHelper.TwoPi / 50f;
             }
+            else
+                rotation += MathHelper.TwoPi / 100f;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             //            spriteBatch.Draw(texture, position, Color.White);
             spriteBatch.Draw(texture, position, null,
-                Color.White, rotation, Vector2.Zero,
+                Color.White, rotation, center,
                 1, SpriteEffects.None, 1);
         }
     }
