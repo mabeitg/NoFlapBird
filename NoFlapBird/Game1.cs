@@ -51,6 +51,7 @@ namespace NoFlapBird
         /// </summary>
         protected override void Initialize()
         {
+            IsMouseVisible = true;
             graphics.PreferredBackBufferHeight = 800;
             graphics.PreferredBackBufferWidth = 1200;
             graphics.ApplyChanges();

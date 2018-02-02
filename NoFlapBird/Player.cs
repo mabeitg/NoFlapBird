@@ -14,6 +14,7 @@ namespace NoFlapBird
         Texture2D texture;
         Vector2 position, velocity;
         int points;
+        float rotation;
 
         //Konstruktor
         public Player(Texture2D texture)
@@ -45,6 +46,9 @@ namespace NoFlapBird
             //Fågeln rör sig
             position += velocity;
 
+            //Rotation i färdriktning
+            rotation = (float)Math.Atan2(velocity.Y, velocity.X);
+
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 velocity.Y = -3;
@@ -54,7 +58,10 @@ namespace NoFlapBird
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            //            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, position, null,
+                Color.White, rotation, Vector2.Zero,
+                1, SpriteEffects.None, 1);
         }
     }
 }
